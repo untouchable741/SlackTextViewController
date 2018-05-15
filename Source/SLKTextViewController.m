@@ -1297,7 +1297,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         contentInset.top = contentInset.bottom > 0.0 ? 0.0 : contentInset.top;
     }
     else {
-        contentInset.bottom = 0.0;
+        if (self.resetInsetAfterLayoutSubviews == NO) {
+            contentInset.bottom = 0.0;
+        }
     }
     
     self.scrollViewProxy.contentInset = contentInset;
