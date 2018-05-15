@@ -155,7 +155,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     self.keyboardPanningEnabled = YES;
     self.shouldClearTextAtRightButtonPress = YES;
     self.shouldScrollToBottomAfterKeyboardShows = NO;
-    
+    self.resetInsetAfterLayoutSubviews = YES;
     self.automaticallyAdjustsScrollViewInsets = YES;
     self.extendedLayoutIncludesOpaqueBars = YES;
 }
@@ -1297,7 +1297,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         contentInset.top = contentInset.bottom > 0.0 ? 0.0 : contentInset.top;
     }
     else {
-        contentInset.bottom = 0.0;
+        if (self.resetInsetAfterLayoutSubviews == YES) {
+            contentInset.bottom = 0.0;
+        }
     }
     
     self.scrollViewProxy.contentInset = contentInset;
