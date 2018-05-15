@@ -1774,26 +1774,30 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return;
     }
     
-    [self.textView lookForPrefixes:self.registeredPrefixes
-                        completion:^(NSString *prefix, NSString *word, NSRange wordRange) {
-                            
-                            if (prefix.length > 0 && word.length > 0) {
+    if (self.forceCompleting) {
+        [self didChangeAutoCompletionPrefix:@"" andWord:text];
+    } else {
+        [self.textView lookForPrefixes:self.registeredPrefixes
+                            completion:^(NSString *prefix, NSString *word, NSRange wordRange) {
                                 
-                                // Captures the detected symbol prefix
-                                _foundPrefix = prefix;
-                                
-                                // Removes the found prefix, or not.
-                                _foundWord = [word substringFromIndex:prefix.length];
-                                
-                                // Used later for replacing the detected range with a new string alias returned in -acceptAutoCompletionWithString:
-                                _foundPrefixRange = NSMakeRange(wordRange.location, prefix.length);
-                                
-                                [self slk_handleProcessedWord:word wordRange:wordRange];
-                            }
-                            else {
-                                [self cancelAutoCompletion];
-                            }
-                        }];
+                                if (prefix.length > 0 && word.length > 0) {
+                                    
+                                    // Captures the detected symbol prefix
+                                    _foundPrefix = prefix;
+                                    
+                                    // Removes the found prefix, or not.
+                                    _foundWord = [word substringFromIndex:prefix.length];
+                                    
+                                    // Used later for replacing the detected range with a new string alias returned in -acceptAutoCompletionWithString:
+                                    _foundPrefixRange = NSMakeRange(wordRange.location, prefix.length);
+                                    
+                                    [self slk_handleProcessedWord:word wordRange:wordRange];
+                                }
+                                else {
+                                    [self cancelAutoCompletion];
+                                }
+                            }];
+    }
 }
 
 - (void)slk_handleProcessedWord:(NSString *)word wordRange:(NSRange)wordRange
